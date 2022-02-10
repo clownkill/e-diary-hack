@@ -33,10 +33,10 @@ def fix_marks(child):
 def create_commendation(child, subject_title):
 	commendations = [
 		'Молодец!',
-		 'Отлично!',
-		 'Хорошо!',
-		 'Гораздо лучше, чем я ожидал!',
-		 'Ты меня приятно удивил!'
+		'Отлично!',
+		'Хорошо!',
+		'Гораздо лучше, чем я ожидал!',
+		'Ты меня приятно удивил!'
 	]
 	year = child.year_of_study
 	letter = child.group_letter

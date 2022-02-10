@@ -11,14 +11,7 @@ from datacenter.models import Schoolkid, Lesson, Commendation, Chastisement, Mar
 
 
 def fetch_schoolkid(child_name):
-    try:
-        child = Schoolkid.objects.get(full_name__contains=child_name)
-    except Schoolkid.MultipleObjectsReturned:
-        print('Слишком много учеников с указанным именем. Пожалуйста уточните имя.')
-        sys.exit()
-    except Schoolkid.ObjectDoesNotExist:
-        print('Ученик с таким именем отсутствует. Пожалуйста уточните имя.')
-        sys.exit()
+    child = Schoolkid.objects.get(full_name__contains=child_name)
     return child
 
 
@@ -65,7 +58,14 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--subject', help='Название предмета', default='Математика')
     args = parser.parse_args()
     kid_full_name = f'{args.last_name} {args.first_name} {args.patronymic}'
-    schoolkid = fetch_schoolkid(kid_full_name)
+    try:
+        schoolkid = fetch_schoolkid(kid_full_name)
+    except Schoolkid.MultipleObjectsReturned:
+        print('Слишком много учеников с указанным именем. Пожалуйста уточните имя.')
+        sys.exit()
+    except Schoolkid.DoesNotExist:
+        print('Ученик с таким именем отсутствует. Пожалуйста уточните имя.')
+        sys.exit()
     print('Начинаю исправлять оценки')
     fix_marks(schoolkid)
     print('Оценки исправлены')
@@ -79,4 +79,3 @@ if __name__ == '__main__':
         print('Неправильно введено название предмета. Пожалуйста выберети правильный предмет из расписания.')
         sys.exit()
     print('Похвала добавлена')
-

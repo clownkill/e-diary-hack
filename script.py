@@ -36,13 +36,16 @@ def create_commendation(child, subject_title):
     lessons = Lesson.objects.filter(year_of_study=year, group_letter=letter)
     target_lessons = lessons.filter(subject__title=subject_title)
     last_lesson = target_lessons.order_by('-date').first()
-    Commendation.objects.create(
-        text=random.choice(commendations),
-        created=last_lesson.date,
-        schoolkid=child,
-        subject=last_lesson.subject,
-        teacher=last_lesson.teacher
-    )
+    if last_lesson:
+        Commendation.objects.create(
+            text=random.choice(commendations),
+            created=last_lesson.date,
+            schoolkid=child,
+            subject=last_lesson.subject,
+            teacher=last_lesson.teacher
+        )
+    else:
+        raise Lesson.DoesNotExist
 
 
 def remove_chastisements(child):
@@ -75,7 +78,8 @@ if __name__ == '__main__':
     print('Начинаю добавлять похвалу')
     try:
         create_commendation(schoolkid, args.subject)
-    except AttributeError:
+    except Lesson.DoesNotExist:
         print('Неправильно введено название предмета. Пожалуйста выберети правильный предмет из расписания.')
         sys.exit()
     print('Похвала добавлена')
+    

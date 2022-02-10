@@ -13,10 +13,10 @@ from datacenter.models import Schoolkid, Lesson, Commendation, Chastisement, Mar
 def fetch_schoolkid(child_name):
     try:
         child = Schoolkid.objects.get(full_name__contains=child_name)
-    except django.core.exceptions.MultipleObjectsReturned:
+    except Schoolkid.MultipleObjectsReturned:
         print('Слишком много учеников с указанным именем. Пожалуйста уточните имя.')
         sys.exit()
-    except django.core.exceptions.ObjectDoesNotExist:
+    except Schoolkid.ObjectDoesNotExist:
         print('Ученик с таким именем отсутствует. Пожалуйста уточните имя.')
         sys.exit()
     return child
@@ -79,3 +79,4 @@ if __name__ == '__main__':
         print('Неправильно введено название предмета. Пожалуйста выберети правильный предмет из расписания.')
         sys.exit()
     print('Похвала добавлена')
+
